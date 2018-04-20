@@ -17,7 +17,12 @@ void print_prompt(){
     puts(getcwd(local,4096));
     printf("# ");
 }
-
+void show_cmds(str_cmd *cmds,int pipe_num){
+    int i = 0;
+    for (i = 0;i<pipe_num + 1;i++){
+        printf("%d,name:%s,para:%s\n",i,cmds[i].name,cmds[i].para);
+    }
+}
 int inner_cmd(char *name,char *para){
     int i;
     // printf("name:%s,para:%s\n",name,para);
@@ -53,6 +58,7 @@ int inner_cmd(char *name,char *para){
 }
 
 int pipe_cmd(str_cmd *cmds,int pipe_num){
+    // show_cmds(cmds,pipe_num);
     pid_t top = fork();
     if(top == 0){   
         int fd[2];
@@ -145,15 +151,16 @@ int main() {
             else if(f == 2)
                 return 0;
             else{
-                pid_t pid = fork();
-                if (pid == 0) {
-                    /* 子进程 */
-                    execvp(args[0], args);
-                    /* execvp失败 */
-                    return 255;
-                }
-                /* 父进程 */
-                wait(NULL);
+                pipe_cmd(cmds,pipe_num);
+                // pid_t pid = fork();
+                // if (pid == 0) {
+                //     /* 子进程 */
+                //     execvp(args[0], args);
+                //     /* execvp失败 */
+                //     return 255;
+                // }
+                // /* 父进程 */
+                // wait(NULL);
             }
         }
         else{
