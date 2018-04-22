@@ -93,7 +93,7 @@ int pipe_cmd(str_cmd *cmds,int pipe_num){
         }
     }
     else
-        wait(NULL);
+      wait(NULL);
 }
 
 int main() {
